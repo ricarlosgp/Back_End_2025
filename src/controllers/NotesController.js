@@ -1,35 +1,34 @@
-const knex = require("../database/knex"); // importando/require o arquivo index.js localizado no diretório database/knex e despejando em minha const knex
-
+const knex = require("../database/knex"); 
 class NotesController{
     async create(request, response){
-        const { title, description, tags, links } = request.body;//estou acessando do corpo/body da requisição/request e pegando as informações: title, description, tags, links. 
+        const { title, description, tags, links } = request.body;
 
-        const { user_id } = request.params;//importando/request do params o meu user_id 
+        const user_id  = request.user.id;
 
-        const note_id = await knex("notes").insert({//cadastrando os objetos que eu quero inserir utilizando o knex
+        const note_id = await knex("notes").insert({
             title,
             description,
             user_id
         });
 
-        const linksInsert = links.map(link => {//irei pegar a const linksInsert que vai/= percorrer/map cada link que eu tenho e retornar/return o note_id e url:link
-            return {//aqui irei criar um objeto novo mudando de link para url
-                note_id,//código da nota que o link está vinculado 
-                url: link//mudando de link para url
+        const linksInsert = links.map(link => {
+            return {
+                note_id,
+                url: link
             }
         });
 
         await knex("links").insert(linksInsert);
 
-        const tagsInsert = tags.map(name => {//irei pegar a const tagsInsert que vai/= percorrer/map cada tags pegando apenas o name dela e vai retornar/return o note_id e url:link
-            return {//aqui irei retornar da tag
+        const tagsInsert = tags.map(name => {
+            return {
                 note_id, 
                 name,
                 user_id
             }
         });
 
-        await knex("tags").insert(tagsInsert); //irei inserir na tabela tags o tagsInsert 
+        await knex("tags").insert(tagsInsert); 
 
         return response.json();
 
@@ -60,7 +59,9 @@ class NotesController{
     }
 
     async index(request, response){
-        const { title, user_id, tags } = request.query;
+        const { title, tags } = request.query;
+
+        const user_id = request.user.id;
 
         let notes;
 
