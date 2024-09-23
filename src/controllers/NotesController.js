@@ -1,4 +1,5 @@
 const knex = require("../database/knex"); 
+
 class NotesController{
     async create(request, response){
         const { title, description, tags, links } = request.body;
@@ -72,7 +73,7 @@ class NotesController{
                 .select([
                     "notes.id",
                     "notes.title",
-                    "notes.user_id",
+                    "notes.user_id"
                 ])
                 .where("notes.user_id", user_id)
                 .whereLike("notes.title", `%${title}%`)
@@ -84,7 +85,7 @@ class NotesController{
         notes = await knex("notes")
         .where({ user_id })
         .whereLike("title", `%${title}%`)
-        .orderBy("title");
+        .orderBy("title")
         }
 
         const userTags = await knex("tags").where({user_id});

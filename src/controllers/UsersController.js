@@ -17,7 +17,10 @@ class UsersController {
 
         const hashedPassword = await hash(password, 8);   
         
-        await database.run("INSERT INTO users (name, email, Password) VALUES(?, ?, ?)",[name, email, hashedPassword])  
+        await database.run(
+            "INSERT INTO users (name, email, password) VALUES(?, ?, ?)",
+            [name, email, hashedPassword]
+        );  
 
         return response.status(201).json(); 
     }
@@ -64,7 +67,7 @@ class UsersController {
             password = ?,
             updated_at = DATETIME('now')
             WHERE id = ?`,
-            [user.name, user.email, user.password, user_id] 
+            [user.name, user.email, user.password, id] 
         );
 
         return response.status(200).json();

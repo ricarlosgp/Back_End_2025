@@ -10,8 +10,9 @@ obs: como já havia criado a migrations Notes.js é só copiar e colar para a mi
 exports.up = knex => knex.schema.createTable("tags", table => {//criando uma tabela(createTable) chamada de tags e irei colocar os campos dessa tabela através da arrow function table =>
     table.increments("id"); //dentro da minha table eu tenho um campo do tipo increments chamado id
     table.text("name").notNullable(); //dentro de minha tabela criei um campo do tipo text chamado de name e não permite que seja um campo nulo/notNullable()
+    table.integer("note_id").references("id").inTable("notes").onDelete("CASCADE");//criei um campo do tipo inteiro/integer chamado note_id que fará uma referência/references ao id que existe  dentro da tabela notes(.inTable(notes) ou seja, não vai dar para eu criar uma nota se não existir um usuário e se eu deletar a nota/onDelete que essa tag está vinculada então automaticamente ele vai deletar a tag em cascata/onDelete("CASCADE"). Ex: eu tenho uma nota e tenho algumas tags vinculadas a essa nota e se eu deletar essa nota não faz sentido eu ter essas tags.      
     table.integer("user_id").references("id").inTable("users");//criei um campo do tipo inteiro/integer chamado user_id que fará uma referência/references ao id que existe  dentro da tabela usuários(.inTable(users). Ou seja, não vai dar para eu criar uma nota se não existir um usuário
-    table.integer("note_id").references("id").inTable("notes").onDelete("CASCADE");//criei um campo do tipo inteiro/integer chamado note_id que fará uma referência/references ao id que existe  dentro da tabela notes(.inTable(notes) ou seja, não vai dar para eu criar uma nota se não existir um usuário e se eu deletar a nota/onDelete que essa tag está vinculada então automaticamente ele vai deletar a tag em cascata/onDelete("CASCADE"). Ex: eu tenho uma nota e tenho algumas tags vinculadas a essa nota e se eu deletar essa nota não faz sentido eu ter essas tags.  
+    
      
 });
 
