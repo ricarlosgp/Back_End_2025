@@ -32,6 +32,6 @@ app.use((error, request, response, next) => {
   });
 });
 
-const PORT = 3333;
+const PORT = 3334;
 
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
